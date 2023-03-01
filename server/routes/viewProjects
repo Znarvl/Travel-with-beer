@@ -1,0 +1,57 @@
+const express = require("express");
+
+
+const viewProjectsRoute = express.Router();
+
+const dbo = require("../db/conn");
+
+const ObjectId = require("mongodb").ObjectId;
+/*
+profileRoute.route("/profile/:email").get(function(req, res){
+    let db_connect = dbo.getDb("db-name");
+     db_connect
+         .collection("users")
+         .find({email: req.params.email})
+         .toArray(function(err, result){
+             if (err) throw err;
+             res.json(result);
+         });
+ });
+*/
+viewProjectsRoute.route("/projects/:email").get(function(req, res){
+    let db_connect = dbo.getDb("db-name");
+     db_connect
+         .collection("projects")
+         .find({userList:{$in:[req.params.email]}})
+         .toArray(function(err, result){
+             if (err) throw err;
+             res.json(result);
+         });
+ });
+ viewProjectsRoute.route("/projects").get(function(req, res){
+    let db_connect = dbo.getDb("db-name");
+     db_connect
+         .collection("projects")
+         .find()
+         .toArray(function(err, result){
+             if (err) throw err;
+             res.json(result);
+         });
+ });
+
+ viewProjectsRoute.route("/projects/project/:id").get(function(req, res){
+    let db_connect = dbo.getDb("db-name");
+     db_connect
+         .collection("projects")
+         .find({_id: ObjectId(req.params.id)})
+         .toArray(function(err, result){
+             if (err) throw err;
+             res.json(result);
+         });
+ });
+
+
+
+
+
+module.exports = viewProjectsRoute;
